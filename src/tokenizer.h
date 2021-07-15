@@ -15,6 +15,7 @@ class Tokenizer{
 		void tokenizer_line(string line);
 		void set_delimiter(string d);
 		bool empty();
+		int  sizeof_toks();
 		
 		string last();
 		string next();

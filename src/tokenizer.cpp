@@ -1,12 +1,12 @@
 #include "tokenizer.h"
 
 Tokenizer::Tokenizer(){
-	tokens.clear();
+	this->tokens.clear();
 	delimiter.clear();
 }
 
 Tokenizer::~Tokenizer(){
-	tokens.clear();
+	this->tokens.clear();
 	delimiter.clear();
 }
 
@@ -15,31 +15,35 @@ void Tokenizer::set_delimiter(string d){
 }
 
 void Tokenizer::tokenizer_line(string line){
-	tokens.clear();
-	boost::algorithm::split(tokens, line, boost::is_any_of(delimiter));
+	this->tokens.clear();
+	boost::algorithm::split(this->tokens, line, boost::is_any_of(delimiter));
 }
 
 string Tokenizer::last(){
 	string item;
 
-	if(!tokens.empty()){
-		item = tokens.back();
-		tokens.pop_back();
+	if(!this->tokens.empty()){
+		item = this->tokens.back();
+		this->tokens.pop_back();
 	}
-
+	
 	return item;
 }
 
 bool Tokenizer::empty(){
-	return tokens.empty();
+	return this->tokens.empty();
+}
+
+int Tokenizer::sizeof_toks(){
+	return this->tokens.size();
 }
 
 string Tokenizer::next(){
 	string item; 
 	
-	if(!tokens.empty()){
-		item = tokens.front();
-		tokens.erase(tokens.begin());
+	if(!this->tokens.empty()){
+		item = this->tokens.front();
+		this->tokens.erase(this->tokens.begin());
 	}
 
 	return item;

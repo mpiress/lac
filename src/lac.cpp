@@ -18,10 +18,10 @@ void C_LAC::preprocessing(){
 	int index, ifeature;
   string delimiter (",");
   
-	ifstream myfile(path);
+	ifstream myfile(this->path);
   if (myfile.is_open())
 		index = 0;
-
+  
   toks->set_delimiter(delimiter);
   
 	while (getline(myfile,line)){
@@ -39,11 +39,11 @@ void C_LAC::preprocessing(){
     }
 
     it = toks->next();
-    
     ifeature = 0;
-    while(!toks->empty()){
+    while(!toks->empty() && ifeature < toks->sizeof_toks()-1){
 
       it = "(" + to_string(ifeature) + "," + it + ")";
+      
       if(features.find(it) != features.end()){
           features[it].push_back(index);
       }else{
@@ -55,7 +55,7 @@ void C_LAC::preprocessing(){
       it = toks->next();
       ifeature ++;
     }
-
+    
     index ++;
 
 	}
@@ -112,7 +112,7 @@ void C_LAC::getRule(list<string> rule, unordered_map<string, list<float> > &resp
                   l3.clear();
               }
         }
-      }
+    }
 }
 
 boost::python::list C_LAC::get_itemset(boost::python::list &task){

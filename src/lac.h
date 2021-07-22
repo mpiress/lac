@@ -11,10 +11,12 @@
 #include <bits/stdc++.h>
 #include <boost/python.hpp>
 #include <boost/foreach.hpp>
+ #include <boost/algorithm/string.hpp>
 #include "tokenizer.h"
 
 
 using namespace std;
+using namespace boost;
 
 class C_LAC{
 

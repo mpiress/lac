@@ -26,25 +26,28 @@ string Tokenizer::last(){
 		item = this->tokens.back();
 		this->tokens.pop_back();
 	}
-	
-	return item;
-}
 
-bool Tokenizer::empty(){
-	return this->tokens.empty();
+	return item;
 }
 
 int Tokenizer::sizeof_toks(){
 	return this->tokens.size();
 }
 
+bool Tokenizer::empty(){
+	return this->tokens.empty();
+}
+
 string Tokenizer::next(){
-	string item; 
+	std::string item; 
 	
 	if(!this->tokens.empty()){
 		item = this->tokens.front();
 		this->tokens.erase(this->tokens.begin());
 	}
+
+	std::string::iterator end_pos = std::remove(item.begin(), item.end(), ' ');
+	item.erase(end_pos, item.end());
 
 	return item;
 }

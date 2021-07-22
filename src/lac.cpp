@@ -15,7 +15,7 @@ void C_LAC::preprocessing(){
 	Tokenizer *toks = new Tokenizer();
 	string line, key; 
   string it;
-	int index, ifeature;
+	int index, ifeature, sizeof_toks;
   string delimiter (",");
   
 	ifstream myfile(this->path);
@@ -28,20 +28,11 @@ void C_LAC::preprocessing(){
     
     toks->tokenizer_line(line);
     
-    it = toks->last();
-    
-    if(classes.find(it) != classes.end()){
-      classes[it].push_back(index);
-    }else{
-      vector<int> f;
-      f.push_back(index);
-      classes.insert(pair<string, vector<int> >(it, f));
-    }
-
     it = toks->next();
     ifeature = 0;
-    while(!toks->empty() && ifeature < toks->sizeof_toks()-1){
-
+    sizeof_toks = toks->sizeof_toks();
+    while(ifeature < sizeof_toks){
+      
       it = "(" + to_string(ifeature) + "," + it + ")";
       
       if(features.find(it) != features.end()){
@@ -55,6 +46,14 @@ void C_LAC::preprocessing(){
       it = toks->next();
       ifeature ++;
     }
+
+    if(classes.find(it) != classes.end()){
+      classes[it].push_back(index);
+    }else{
+      vector<int> f;
+      f.push_back(index);
+      classes.insert(pair<string, vector<int> >(it, f));
+    }
     
     index ++;
 
@@ -62,6 +61,8 @@ void C_LAC::preprocessing(){
   
   size_of_train = index;
   myfile.close();
+
+  cout << "FEATURES:" << features.size() << "\n";
 
 }
 
@@ -121,7 +122,7 @@ boost::python::list C_LAC::get_itemset(boost::python::list &task){
   for (int i = 0; i < len(task); ++i){
     string key = boost::python::extract<string>(task[i]);
     if(features.find(key) != features.end())
-        pylist.append(key);
+      pylist.append(key);
   }
 
   return pylist;
@@ -145,9 +146,13 @@ boost::python::dict C_LAC::execute_task(boost::python::list &task){
     toks->tokenizer_line(value);
     
     string it = toks->next();
+    //it = it.erase(remove(it.begin(), it.end(), ' '), it.end());
+
     while(!toks->empty()){
       rule.push_back(it);
       it = toks->next();
+      //if(it != NULL)
+        //it = it.erase(remove(it.begin(), it.end(), ' '), it.end());
     }
 
     getRule(rule, resp);

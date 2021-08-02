@@ -25,14 +25,12 @@ void C_LAC::preprocessing(){
   toks->set_delimiter(delimiter);
   
 	while (getline(myfile,line)){
-    
     toks->tokenizer_line(line);
     
     it = toks->next();
     ifeature = 0;
     sizeof_toks = toks->sizeof_toks();
     while(ifeature < sizeof_toks){
-      
       it = "(" + to_string(ifeature) + "," + it + ")";
       
       if(features.find(it) != features.end()){
@@ -62,7 +60,8 @@ void C_LAC::preprocessing(){
   size_of_train = index;
   myfile.close();
 
-  cout << "FEATURES:" << features.size() << "\n";
+  //cout << "FEATURES:" << features.size() << "\n";
+  //printFeatures();
 
 }
 
@@ -138,6 +137,7 @@ boost::python::dict C_LAC::execute_task(boost::python::list &task){
   Tokenizer *toks = new Tokenizer();
   list<string> rule;
   list<string>::iterator rit;
+  int tam = 0;
   
   toks->set_delimiter(delimiter);
   
@@ -151,6 +151,7 @@ boost::python::dict C_LAC::execute_task(boost::python::list &task){
     while(!toks->empty()){
       rule.push_back(it);
       it = toks->next();
+      tam ++;
       //if(it != NULL)
         //it = it.erase(remove(it.begin(), it.end(), ' '), it.end());
     }
@@ -160,7 +161,7 @@ boost::python::dict C_LAC::execute_task(boost::python::list &task){
     
   }
 
-	for(itm=resp.begin(); itm != resp.end(); ++itm){
+  for(itm=resp.begin(); itm != resp.end(); ++itm){
     boost::python::list pylist;
     BOOST_FOREACH(float f, itm->second) pylist.append(f);
     dictionary[itm->first] = pylist;
